@@ -1,11 +1,15 @@
 (in-package #:cl)
 
 (defpackage #:cl-stripe-client.test
-  (:use #:cl #:fiveam #:cl-stripe-client))
+  (:use #:cl #:fiveam #:cl-stripe-client)
+  (:export #:run-tests))
 
 (in-package #:cl-stripe-client.test)
 
 (defparameter *test-api-key* "tGN0bIwXnHdwOa85VABjPdSn8nWY7G7I")
+
+(defun run-tests ()
+  (run! 'stripe))
 
 (def-suite stripe)
 
