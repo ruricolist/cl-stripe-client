@@ -358,7 +358,7 @@ bracketed arrays."
              (let ((data (@ ev :data)))
                (setf (@ ev :data)
                      (make-instance 'event-data
-                                    :previous-attributes (@ data :previous-attributes)
+                                    :previous-attributes (rec (@ data :previous-attributes))
                                     :object (rec (@ data :object))))
                (rec ev t)))
            (rec (object &optional event?)
