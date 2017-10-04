@@ -187,9 +187,21 @@ optionally, trivial CRUD methods."
 
 (defclass stripe-object ()
   ((id :initarg :id :accessor id)
+   (kind :initarg :kind :reader stripe-object-kind :type string)
    (deleted :initarg :deleted :reader deletedp))
   (:default-initargs :id "" :deleted nil)
   (:documentation "Base class of all Stripe objects."))
+
+(defclass unrecognized-object (stripe-object)
+  (initargs :accessor unrecognized-object-initargs)
+  (:documentation "Class for unrecognized objects; better to return a cipher than to crash."))
+
+(defmethods unrecognized-object (self initargs kind)
+  (:method initialize-instance (self &rest args &key &allow-other-keys)
+    (setf initargs args))
+  (:method print-object (self stream)
+    (print-unreadable-object (self stream :type t)
+      (format stream "~a ~s" kind initargs))))
 
 (defmodel api-resource (stripe-object)
   ((livemode :initarg :livemode :accessor livep)
@@ -342,17 +354,16 @@ bracketed arrays."
                ("line_item" 'invoice-line-item)
                (otherwise (find-symbol (string-upcase kind) :cl-stripe-client))))
            (handle-object (object kind)
-             (let ((class-name (kind-class kind)))
-               (unless class-name
-                 (error "No such class as ~a" class-name))
-               (let ((class (find-class class-name t)))
-                 (apply #'make
-                        class
-                        :allow-other-keys t
-                        (apply #'nconc
-                               (maphash-return (lambda (k v)
-                                                 (list k (rec v)))
-                                               object))))))
+             (let* ((class-name (or (kind-class kind) 'unrecognized-object))
+                    (class (find-class class-name t)))
+               (apply #'make
+                      class
+                      :allow-other-keys t
+                      :kind kind
+                      (apply #'nconc
+                             (maphash-return (lambda (k v)
+                                               (list k (rec v)))
+                                             object)))))
            (rec-event (ev)
              "Handle events, which use the :object key differently."
              (let ((data (@ ev :data)))
