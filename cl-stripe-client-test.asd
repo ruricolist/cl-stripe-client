@@ -1,2 +1,0 @@
-;;;; cl-stripe-client.asd
-
