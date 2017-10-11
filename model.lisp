@@ -193,7 +193,7 @@ optionally, trivial CRUD methods."
   (:documentation "Base class of all Stripe objects."))
 
 (defclass unrecognized-object (stripe-object)
-  (initargs :accessor unrecognized-object-initargs)
+  ((initargs :accessor unrecognized-object-initargs))
   (:documentation "Class for unrecognized objects; better to return a cipher than to crash."))
 
 (defmethods unrecognized-object (self initargs kind)
