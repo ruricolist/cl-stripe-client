@@ -340,7 +340,7 @@ bracketed arrays."
   "Convert a Stripe JSON object key to a keyword."
   (make-keyword (substitute #\- #\_ (string-upcase key))))
 
-(defsubst plist->instance (class plist)
+(defun plist->instance (class plist)
   (apply #'make-instance class :allow-other-keys t plist))
 
 (defun json->object-tree (body)
