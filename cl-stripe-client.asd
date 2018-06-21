@@ -6,7 +6,7 @@
   :author "Paul M. Rodriguez <pmr@ruricolist.com>"
   :license "MIT"
   :in-order-to ((asdf:test-op (asdf:test-op #:cl-stripe-client/test)))
-  :version "1.0.0"
+  :version "1.0.1"
   :depends-on (#:alexandria
                #:serapeum
                #:puri
