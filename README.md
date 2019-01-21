@@ -1,3 +1,5 @@
+NB: This implements an [older version](https://web.archive.org/web/20140122053928/https://stripe.com/docs/api) (2013-12-03) of the Stripe API. It still works, but it lacks support for (among other things, presumably) the Product model.
+
 CL-STRIPE-CLIENT is a boring Common Lisp client for the Stripe payment
 system. It closely follows the Java version of the official Stripe
 client, including its test suite. It can be used against the
